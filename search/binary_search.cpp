@@ -2,7 +2,7 @@
 #include<vector>
 using namespace std;
 
-
+// 一般二分查找
 int binary_search(vector<int> &arr,int key)
 {
 		int low = 0;
@@ -20,6 +20,58 @@ int binary_search(vector<int> &arr,int key)
 
 		}
 		return -1;
+}
+
+// 寻找左边界的二分查找
+int binarySearch(vector<int> &arr,int target)
+{
+    if(arr.size() == 0)
+        return -1;
+    int left = 0;
+    int right = arr.size();
+    
+    while(left < right)
+    {
+        int mid = (right+left)/2;
+        
+        if(arr[mid] == target)
+            right = mid;
+        else if(arr[mid] < target)
+            left = mid +1;
+        else if(arr[mid] > target)
+            right = mid;
+
+    }
+
+    if(left == arr.size())
+        return -1;
+    return arr[left] == target ? left : -1;
+}
+
+// 寻找右侧边界的二分查找
+int binarySearch(vector<int> &arr,int target)
+{
+    if(arr.size() == 0)
+        return -1;
+    int left = 0;
+    int right = arr.size();
+    
+    while(left < right)
+    {
+        int mid = (right+left)/2;
+        
+        if(arr[mid] == target)
+            left = mid + 1;
+        else if(arr[mid] < target)
+            left = mid +1;
+        else if(arr[mid] > target)
+            right = mid;
+
+    }
+
+    if(left == 0)
+        return -1;
+    return arr[left-1] == target ? left-1 : -1;
 }
 
 int main()
