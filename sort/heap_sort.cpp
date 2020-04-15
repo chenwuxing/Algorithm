@@ -9,6 +9,15 @@ void exch(vector<int> &arr,int i,int j)
     arr[j] = temp;
 }
 
+void swim(vector<int> &arr,int k)
+{
+    while(k > 1 && arr[k] > arr[k/2])
+    {
+        exch(arr,k,k/2);
+        k /= 2;
+    }
+}
+
 void sink(vector<int> &arr,int k,int length)
 {
     while(2*k <= length)
