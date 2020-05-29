@@ -2,54 +2,42 @@
 #include <vector>
 using namespace std;
 
-void exch(vector<int> &arr,int i,int j)
+int partition(vector<int> &arr,int low,int high)
 {
-    int temp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = temp;
+    int i = low;
+    int j = high;
+    int benchMark = arr[low];
 
-}
-
-int partition(vector<int> &arr,int lo,int hi)
-{
-    int i = lo;
-    int j = hi + 1;
-    int v = arr[lo];
     while(true)
     {
-        while(arr[++i] <= v){
-            if(i == hi)
+        while(arr[i] <= benchMark)
+        {
+            i++;
+            if(i == high)
                 break;
-
         }
-        while(arr[--j] >= v){
-            if(j == lo)
+
+        while(arr[j] >= benchMark)
+        {
+            j--;
+            if(j == low)
                 break;
-
         }
+        
         if(i >= j)
             break;
-        exch(arr,i,j);
+        
+        swap(arr[i],arr[j]);
     }
-    exch(arr,lo,j);
+    swap(arr[low],arr[j]);
     return j;
 }
 
-void quick_sort(vector<int> &arr,int lo,int hi)
+void quickSort(vector<int> &arr,int low,int high)
 {
-    if(hi <= lo)
+    if(low >= high)
         return;
-    int j = partition(arr,lo,hi);
-    quick_sort(arr,lo,j-1);
-    quick_sort(arr,j+1,hi);
-}
-
-int main()
-{
-    vector<int> arr{6,5,4,3,2,1,6,6,6,1,3,2};
-    quick_sort(arr,0,arr.size()-1);
-    for(auto i:arr)
-    {
-        cout<<i<<endl;
-    }
+    int index = partition(arr,low,high);
+    quickSort(arr,low,index-1);
+    quickSort(arr,index+1,high);
 }
