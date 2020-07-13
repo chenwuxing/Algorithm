@@ -1,84 +1,54 @@
+#include<vector>
 #include<iostream>
-#include <vector>
 using namespace std;
 
 
 
-void merge_two_list(vector<int> &arr,int left,int mid,int right)
+void mergeTwo(vector<int> &nums,int left,int mid,int right)
 {
-    int length = right - left + 1;
-    vector<int> tmp(length);
-    int start = left;
-    int tmp_index = 0;
-    int tail_left = mid -1;
-    while(left <= tail_left && mid <= right)
+    vector<int> tmp;
+    int i = left;
+    int j = mid + 1;
+
+    while(i <= mid && j <= right)
     {
-        if(arr[left] <= arr[mid])
+        if(nums[i] <= nums[j])
         {
-            tmp[tmp_index] = arr[left];
-            left++;
+            tmp.push_back(nums[i++]);
         }
         else
         {
-            tmp[tmp_index] = arr[mid];
-            mid++;
-        }
-        tmp_index++;
-    }
-    if(left > tail_left)
-    {
-        while(mid <= right)
-        {
-            tmp[tmp_index] = arr[mid];
-            mid++;
-            tmp_index++;
+            tmp.push_back(nums[j++]);
         }
     }
-    if(mid > right)
-    {
-        while(left <= tail_left)
-        {
-            tmp[tmp_index] = arr[left];
-            left++;
-            tmp_index++;
-        }
-    }
-    for(int i = 0;i<length;i++)
-        arr[i+start] = tmp[i];
+    while(i <= mid)
+        tmp.push_back(nums[i++]);
+    
+    while(j <= right)
+        tmp.push_back(nums[j++]);
+
+    for(int m = 0,n = left;m < tmp.size();m++,n++)
+        nums[n] = tmp[m];
 }
 
-// 迭代法实现
-void merge_sort(vector<int> &arr)
-{
-    int length = arr.size();
-    for(int step = 1;step < length;step <<= 1)
-    {
-        int offset = step + step;
-        for(int index = 0;index < length;index = index+offset)
-        {
-            merge_two_list(arr,index,min(index + step,length-1),min(index+offset-1,length-1));
-        }
-    }
-}
-
-// 递归实现
-void merge_sort_recursive(vector<int> &arr,int left,int right)
+void mergeSort(vector<int> &nums,int left,int right)
 {
     if(left >= right)
         return;
 
-    int mid = (right - left)/2 +left;
-    merge_sort_recursive(arr,left,mid);
-    merge_sort_recursive(arr,mid + 1,right);
-    merge_two_list(arr,left,mid + 1,right);
+    int mid = left + (right - left)/2;
+    mergeSort(nums,left,mid);
+    mergeSort(nums,mid + 1,right);
+    mergeTwo(nums,left,mid,right);
 }
 
 int main()
 {
-    vector<int> arr{9,8,7,6,5,4,3,2,1};
-    merge_sort_recursive(arr,0,arr.size()-1);
-    for(auto i:arr)
+    vector<int> arr{4,21,5,9,0,1,3};
+    mergeSort(arr,0,(int)arr.size()-1);
+    for(auto &i:arr)
     {
         cout<<i<<endl;
     }
+    system("pause");
 }
